@@ -1,0 +1,43 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HireSphere - Home</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+  </head>
+  <body>
+    <div class="split-container">
+      <div class="left-section">
+        <div class="logo">
+          <img src="{% static 'imgs/dark.png' %}" alt="HireSphere Logo" />
+        </div>
+      </div>
+      <div class="right-section">
+        <nav class="navbar">
+          <div class="nav-links">
+            <a href="{% url 'jobs:index' %}" target="_self">Home</a>
+            <a href="{% url 'jobs:login' %}" target="_self">Login</a>
+            <a href="{% url 'jobs:signup' %}" target="_self">Sign Up</a>
+          </div>
+        </nav>
+        <div class="content">
+          <h2>Welcome</h2>
+          <p>
+            Since our opening, we have become masters of our craft. Our
+            commitment to quality products, exceptional services and
+            incomparable customer care keep our community coming back again and
+            again.
+          </p>
+          <p class="contact-info">info@myhiresphere.com<br />123-456-7890</p>
+          <p class="social-icons">
+            <a href="#"><span class="icon">●</span></a>
+            <a href="#"><span class="icon">●</span></a>
+            <a href="#"><span class="icon">●</span></a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

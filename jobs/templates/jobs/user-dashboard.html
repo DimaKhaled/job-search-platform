@@ -1,0 +1,61 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User Dashboard - HireSphere</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+</head>
+<body>
+    <nav class="navbar standard-nav">
+        <div class="nav-brand">
+            <a href="{% url 'jobs:index' %}">
+                <img src="{% static 'imgs/dark.png' %}" alt="HireSphere Logo" class="nav-logo" />
+            </a>
+        </div>
+        <div class="nav-links">
+            <a href="{% url 'jobs:available_jobs' %}">Available Jobs</a>
+            <a href="{% url 'jobs:logout' %}">Logout</a>
+        </div>
+    </nav>
+    <main>
+        <h1>User Dashboard</h1>
+        <h2>Search Jobs</h2>
+        <form action="{% url 'jobs:available_jobs' %}" method="get" class="search-form">
+            <div class="form-group">
+                <label for="job-title">Job Title:</label>
+                <input name="q" id="job-title" autocomplete="off" placeholder="Search Jobs (e.g. Work From Home)" role="search" class="search-input job-search" />
+            </div>
+            <div class="form-group">
+                <label for="experience">Years of Experience:</label>
+                <input type="number" id="experience" name="experience" min="0" placeholder="e.g., 2" />
+            </div>
+            <button type="submit">Search</button>
+        </form>
+        <h2>Applied Jobs</h2>
+        <table class="jobs-table">
+            <thead>
+                <tr>
+                    <th>Job Title</th>
+                    <th>Company</th>
+                    <th>Status</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for application in applications %}
+                    <tr>
+                        <td>{{ application.job.title }}</td>
+                        <td>{{ application.job.company }}</td>
+                        <td>{{ application.status|capfirst }}</td>
+                        <td><a href="{% url 'jobs:job_details_user' application.job.id %}">View</a></td>
+                    </tr>
+                {% empty %}
+                    <tr><td colspan="4">You have not applied to any jobs yet.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </main>
+</body>
+</html>

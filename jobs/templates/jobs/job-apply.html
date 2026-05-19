@@ -1,0 +1,98 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apply for {{ job.title }} - HireSphere</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <style>
+        .error-message {
+            color: red;
+            font-size: 14px;
+            margin-top: 10px;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar standard-nav">
+        <div class="nav-brand">
+            <a href="{% url 'jobs:index' %}">
+                <img src="{% static 'imgs/dark.png' %}" alt="HireSphere Logo" class="nav-logo">
+            </a>
+        </div>
+        <div class="nav-links">
+            <a href="{% url 'jobs:index' %}">Home</a>
+            <a href="{% url 'jobs:available_jobs' %}">Available Jobs</a>
+            <a href="{% url 'jobs:user_dashboard' %}">Dashboard</a>
+            <a href="{% url 'jobs:logout' %}" id="logoutLink">Logout</a>
+        </div>
+    </nav>
+    <main>
+        <h1>Apply for {{ job.title }}</h1>
+        <form id="applyForm" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="full-name">Full Name:</label>
+                <input type="text" id="full-name" name="full-name" required>
+            </div>
+            <div class="form-group">
+                <label for="resume">Resume (PDF only):</label>
+                <input type="file" id="resume" name="resume" accept="application/pdf" required>
+            </div>
+            <div class="form-group">
+                <label for="cover-letter">Cover Letter (Optional):</label>
+                <textarea id="cover-letter" name="cover-letter" rows="5"></textarea>
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="apply-btn">Apply</button>
+            </div>
+            <p class="error-message" id="applyError" style="display: none;"></p>
+        </form>
+    </main>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#applyForm').on('submit', function(e) {
+                e.preventDefault(); 
+
+                var formData = new FormData(this); 
+
+                $.ajax({
+                    url: '{% url "jobs:job_apply" job.id %}',
+                    type: 'POST',
+                    data: formData,
+                    processData: false, 
+                    contentType: false, 
+                    headers: { 'X-Requested-With': 'XMLHttpRequest' },
+                    success: function(response) {
+                        if (response.success) {
+                            window.location.href = response.redirect_url; 
+                        } else {
+                            $('#applyError').text(response.error).show(); 
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        $('#applyError').text('An error occurred. Please try again.').show();
+                    }
+                });
+            });
+
+            $('#logoutLink').on('click', function(e) {
+                e.preventDefault();
+                $.ajax({
+                    url: '{% url "jobs:logout" %}',
+                    type: 'POST',
+                    data: { csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val() },
+                    success: function(response) {
+                        if (response.success) {
+                            window.location.href = response.redirect_url;
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

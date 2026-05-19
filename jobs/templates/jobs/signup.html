@@ -1,0 +1,72 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - HireSphere</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <style>
+        .error-message {
+            color: red;
+            font-size: 14px;
+            margin-top: 10px;
+            display: block;
+        }
+        .success-message {
+            color: green;
+            font-size: 14px;
+            margin-top: 10px;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar standard-nav">
+        <div class="nav-brand">
+            <a href="{% url 'jobs:index' %}">
+                <img src="{% static 'imgs/dark.png' %}" alt="HireSphere Logo" class="nav-logo">
+            </a>
+        </div>
+        <div class="nav-links">
+            <a href="{% url 'jobs:index' %}">Home</a>
+            <a href="{% url 'jobs:login' %}">Login</a>
+        </div>
+    </nav>
+    <main>
+        <h1>Sign Up</h1>
+        <form class="auth-form" method="post" action="{% url 'jobs:signup' %}">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <div class="form-group">
+                <label for="confirm-password">Confirm Password:</label>
+                <input type="password" id="confirm-password" name="confirm-password" required>
+            </div>
+            <div class="form-group">
+                <label for="is_company_admin">Are you a Company Admin?</label>
+                <input type="checkbox" id="is_company_admin" name="is_company_admin">
+            </div>
+            <div class="form-group company-field" id="companyField" style="display: none;">
+                <label for="company-name">Company Name:</label>
+                <input type="text" id="company-name" name="company-name">
+            </div>
+            <button type="submit">Sign Up</button>
+            <p id="signupError" class="error-message" style="display: none;"></p>
+            <p id="signupSuccess" class="success-message" style="display: none;"></p>
+    
+        </form>
+    </main>
+    <script src="{% static 'js/signup.js' %}"></script>
+</body>
+</html>

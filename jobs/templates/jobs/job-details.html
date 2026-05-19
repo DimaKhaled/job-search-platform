@@ -1,0 +1,39 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Job Details - HireSphere</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+</head>
+<body>
+    <nav class="navbar standard-nav">
+        <div class="nav-brand">
+            <a href="{% url 'jobs:index' %}">
+                <img src="{% static 'imgs/dark.png' %}" alt="HireSphere Logo" class="nav-logo" />
+            </a>
+        </div>
+        <div class="nav-links">
+            <a href="{% url 'jobs:user_dashboard' %}">Dashboard</a>
+            <a href="{% url 'jobs:available_jobs' %}">Available Jobs</a>
+            <a href="{% url 'jobs:logout' %}">Logout</a>
+        </div>
+    </nav>
+    <main>
+        <h1>Job Details</h1>
+        <p><a href="{% url 'jobs:available_jobs' %}">Back to Available Jobs</a></p>
+        <div class="job-details">
+            <h2>{{ job.title }}</h2>
+            <p><strong>Company:</strong> {{ job.company }}</p>
+            <p><strong>Salary:</strong> ${{ job.salary|floatformat:2 }}</p>
+            <p><strong>Experience:</strong> {{ job.experience }} years</p>
+            <p><strong>Status:</strong> {{ job.status|capfirst }}</p>
+            <p><strong>Description:</strong> {{ job.description }}</p>
+        </div>
+        {% if job.status == 'open' and not user_applied %}
+            <a href="{% url 'jobs:job_apply' job.id %}"><button>Apply for this Job</button></a>
+        {% endif %}
+    </main>
+</body>
+</html>

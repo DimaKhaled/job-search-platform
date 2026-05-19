@@ -1,0 +1,50 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Available Jobs - HireSphere</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+</head>
+<body>
+    <nav class="navbar standard-nav">
+        <div class="nav-brand">
+            <a href="{% url 'jobs:index' %}">
+                <img src="{% static 'imgs/dark.png' %}" alt="HireSphere Logo" class="nav-logo" />
+            </a>
+        </div>
+        <div class="nav-links">
+            <a href="{% url 'jobs:user_dashboard' %}">User Dashboard</a>
+            <a href="{% url 'jobs:logout' %}">Logout</a>
+        </div>
+    </nav>
+    <main>
+        <h1>Available Jobs</h1>
+        <table class="jobs-table">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Company</th>
+                    <th>Salary</th>
+                    <th>Experience</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for job in jobs %}
+                    <tr>
+                        <td>{{ job.title }}</td>
+                        <td>{{ job.company }}</td>
+                        <td>${{ job.salary|floatformat:2 }}</td>
+                        <td>{{ job.experience }} years</td>
+                        <td><a href="{% url 'jobs:job_details' job.id %}">View</a></td>
+                    </tr>
+                {% empty %}
+                    <tr><td colspan="5">No available jobs.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </main>
+</body>
+</html>
